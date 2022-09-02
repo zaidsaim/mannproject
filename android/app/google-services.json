@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "910111768266",
+    "project_id": "manntravel-44791",
+    "storage_bucket": "manntravel-44791.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:910111768266:android:5d05c6bbdd42e0f16f7e33",
+        "android_client_info": {
+          "package_name": "com.manntravel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "910111768266-07uata8uj7djb7lv0cfqm1v9u29e89v0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.manntravel",
+            "certificate_hash": "2cafc2d462ecddc8e0e15fda7619d87e629da77a"
+          }
+        },
+        {
+          "client_id": "910111768266-1123jamn6krtmp14p70lictjeinm72v7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEKXhjP3d1Fmzi_wmIbxnRtS0L8NvCpWM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "910111768266-1123jamn6krtmp14p70lictjeinm72v7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
