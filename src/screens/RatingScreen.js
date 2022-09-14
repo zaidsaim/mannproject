@@ -5,14 +5,19 @@ import { colors } from '../global/styles';
 import {Picker} from '@react-native-picker/picker';
 // import DropDownPicker from 'react-native-dropdown-picker';
 import { Divider } from "@rneui/themed";
-import SignatureCapture from 'react-native-signature-capture';
+// import SignatureCapture from 'react-native-signature-capture';
 import Dialog from "react-native-dialog";
 import axios from 'axios';
 import {  Card, Title, Paragraph } from 'react-native-paper';
 
+
+
+
+
 export default class RatingScreen extends Component {
   constructor(){
     super()
+    this.selectorRef = React.createRef(null);
     this.state={
       chauffeur_punctuality:'',
       outlook_of_chauffeu:'',
@@ -108,6 +113,75 @@ componentDidMount(){
 //  }
 // }
 
+showDialog = () => {
+  this.setState({visible:true});
+};
+
+ handleCancel = () => {
+  this.setState({visible:false});
+};
+
+
+
+ handleDelete = () => {
+  // The user has pressed the "Delete" button, so here you can do your own logic.
+  // ...Your logic
+this.setState({visible:false});
+};
+
+
+saveSign() {
+  this.refs["sign"].saveImage();
+}
+
+resetSign() {
+  this.refs["sign"].resetImage();
+}
+
+_onSaveEvent(result) {
+  result.encoded 
+  // - for the base64 encoded png
+  result.pathName 
+  // - for the file path name
+  console.log(result);
+}
+_onDragEvent() {
+   // This callback will be called when the user enters signature
+  console.log("dragged");
+}
+
+
+
+
+
+
+
+ handleOK = (signature) => {
+  console.log(signature);
+  onOK(signature);
+};
+
+ handleClear = () => {
+  this.selectorRef = React.createRef(null);
+  this.current.clearSignature();
+};
+
+ handleConfirm = () => {
+  console.log("end");
+  this.selectorRef = React.createRef(null);
+  this.current.readSignature();
+};
+
+//  style = `.m-signature-pad--footer {display: none; margin: 0px;}`;
+
+
+
+
+
+
+
+
+
 
  useSignature =()=>{
   const user=JSON.parse(localStorage.getItem('user'))
@@ -148,42 +222,7 @@ componentDidMount(){
 
 
 
-  showDialog = () => {
-  this.setState({visible:true});
-};
 
- handleCancel = () => {
-  this.setState({visible:false});
-};
-
-
-
- handleDelete = () => {
-  // The user has pressed the "Delete" button, so here you can do your own logic.
-  // ...Your logic
-this.setState({visible:false});
-};
-
-
-saveSign() {
-  this.refs["sign"].saveImage();
-}
-
-resetSign() {
-  this.refs["sign"].resetImage();
-}
-
-_onSaveEvent(result) {
-  result.encoded 
-  // - for the base64 encoded png
-  result.pathName 
-  // - for the file path name
-  console.log(result);
-}
-_onDragEvent() {
-   // This callback will be called when the user enters signature
-  console.log("dragged");
-}
 
 
 
@@ -191,13 +230,13 @@ _onDragEvent() {
  const user=JSON.parse(localStorage.getItem('user'))
 
   return (
-    <View style={{flex:1,padding:10,backgroundColor:'white',paddingTop:20}}>
-    <View style={{justifyContent:'center',alignSelf:'center',}}>
+    <View style={{flex:1,padding:10,backgroundColor:'white',}}>
+    <View style={{justifyContent:'center',alignSelf:'center',marginTop:20}}>
     <Text style={{fontSize:16,color:'#24ada2'}}>Rate Our Service</Text>
     </View>
-    <Divider style={{paddingTop:5}}/>
-   
-<Card style={{elevation:2,marginHorizontal:10,height:80,marginTop:7}}>
+    <Divider style={{paddingVertical:5}}/>
+   <View>
+<Card style={{elevation:2,marginHorizontal:10,height:80,marginVertical:6,marginTop:10}}>
 <Card.Content>
 <View style={{justifyContent:'flex-start',}}>
 <Text style={{fontSize:14,color:colors.grey3}}>Chauffeur Punctuality:</Text>
@@ -212,7 +251,7 @@ onRate={(chauffeur_punctuality)=>this.setState({chauffeur_punctuality:chauffeur_
  </Card.Content>
  </Card>
 
- <Card style={{elevation:2,marginHorizontal:10,height:80,marginTop:7}}>
+ <Card style={{elevation:2,marginHorizontal:10,height:80,marginVertical:5}}>
 <Card.Content>
     <View style={{justifyContent:'flex-start',}}>
     <Text style={{fontSize:14,color:colors.grey3}}>Outlook of Chauffeur:</Text>
@@ -228,7 +267,7 @@ onRate={(outlook_of_chauffeu)=>this.setState({outlook_of_chauffeu:outlook_of_cha
     </Card>
 
     
-    <Card style={{elevation:2,marginHorizontal:10,height:80,marginTop:7}}>
+    <Card style={{elevation:2,marginHorizontal:10,height:80,marginVertical:5}}>
 <Card.Content>
     <View style={{justifyContent:'flex-start',}}>
     <Text style={{fontSize:14,color:colors.grey3}}>Routes Knowledge:</Text>
@@ -244,7 +283,7 @@ onRate={(knowledge_of_route)=>this.setState({knowledge_of_route:knowledge_of_rou
     </Card>
 
 
-    <Card style={{elevation:2,marginHorizontal:10,height:80,marginTop:7}}>
+    <Card style={{elevation:2,marginHorizontal:10,height:80,marginVertical:5}}>
     <Card.Content>
     <View style={{justifyContent:'flex-start',}}>
     <Text style={{fontSize:14,color:colors.grey3}}>Car cleanliness- Interior:</Text>
@@ -259,7 +298,7 @@ onRate={(car_cleanliness_interior)=>this.setState({car_cleanliness_interior:car_
     </Card.Content>
     </Card>
 
-    <Card style={{elevation:2,marginHorizontal:10,height:80,marginTop:7}}>
+    <Card style={{elevation:2,marginHorizontal:10,height:80,marginVertical:5}}>
     <Card.Content>
     <View style={{justifyContent:'flex-start',}}>
     <Text style={{fontSize:14,color:colors.grey3}}>Car cleanliness- Exterior:</Text>
@@ -274,7 +313,7 @@ onRate={(car_cleanliness_exterior)=>this.setState({car_cleanliness_exterior:car_
     </Card.Content>
     </Card>
 
-    <Card style={{elevation:2,marginHorizontal:10,height:177,marginTop:3}}>
+    <Card style={{elevation:2,marginHorizontal:10,height:220,marginVertical:5,}}>
 <Card.Content>
    <View style={{justifyContent:'flex-start',}}>
    <Text style={{fontSize:15,color:colors.grey3}}>Unsigned Reason</Text>
@@ -301,60 +340,31 @@ onRate={(car_cleanliness_exterior)=>this.setState({car_cleanliness_exterior:car_
    </Picker>
  </View>
  </View>
-<View style={{backgroundColor:colors.grey2,marginHorizontal:100,paddingVertical:7}}> 
-<TouchableOpacity onPress={()=>this.showDialog()}>
+<View style={{backgroundColor:colors.grey2,marginHorizontal:100,paddingVertical:5}}> 
+<TouchableOpacity onPress={()=>this.props.navigation.navigate('SignatureScreen')}>
  <View>
  <Text style={{justifyContent:'center',textAlign:'center',color:'white'}}>Signature</Text>
  </View>
  </TouchableOpacity>
- <Dialog.Container visible={this.state.visible} >
- <View  style={{ height: '70%', width: '70%' }}>
-        <Dialog.Title>Signature</Dialog.Title>
-        <Dialog.Description>
-        <SignatureCapture
-        style={[{flex:1},styles.signature]}
-        ref="sign"
-        onSaveEvent={this._onSaveEvent}
-        onDragEvent={this._onDragEvent}
-        saveImageFileInExtStorage={false}
-        showNativeButtons={false}
-        showTitleLabel={false}
-        backgroundColor="#ff00ff"
-        strokeColor="#ffffff"
-        minStrokeWidth={4}
-        maxStrokeWidth={4}
-        viewMode={"portrait"}/>
-        </Dialog.Description>
-        </View>
-       
-        <View style={{ flex: 1, flexDirection: "row" }}>
-        <TouchableHighlight style={styles.buttonStyle}
-        onPress={() => { this.handleCancel() } } >
-        <Text>Cancel</Text>
-    </TouchableHighlight>
-                   
+ 
 
-                    <TouchableHighlight style={styles.buttonStyle}
-                        onPress={() =>this.resetSign() } >
-                        <Text>Reset</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={styles.buttonStyle}
-                    onPress={() => { this.useSignature() } } >
-                    <Text>Save</Text>
-                </TouchableHighlight>
-                </View>
-      </Dialog.Container>
+
+
+
+
+
+
  
  </View>
  <TouchableOpacity onPress={()=>this.ratingUser()}>
- <View style={{backgroundColor:'#24ada2',marginHorizontal:100,marginTop:10,paddingVertical:7}}>
+ <View style={{backgroundColor:'#24ada2',marginHorizontal:100,marginTop:10,paddingVertical:5,marginBottom:10}}>
  <Text style={{justifyContent:'center',textAlign:'center',color:'white'}}>Submit</Text>
  </View>
  </TouchableOpacity>
  </Card.Content>
     </Card>
     </View>
-     
+     </View>
   
   )
 }
@@ -384,7 +394,8 @@ onRate={(car_cleanliness_exterior)=>this.setState({car_cleanliness_exterior:car_
     width: "100%",
     justifyContent: "space-between",
     alignItems: "center",
-   fontSize:15
+   fontSize:15,
+   marginVertical:5
   },
   signature: {
     flex: 1,
@@ -395,7 +406,32 @@ buttonStyle: {
   flex: 1, justifyContent: "center", alignItems: "center", height: 50,
   backgroundColor: "#eeeeee",
   margin: 10
-}
+},
+
+
+
+
+
+
+
+
+container: {
+  flex: 1,
+  alignItems: "center",
+  justifyContent: "center",
+  height: 250,
+  padding: 10,
+},
+row: {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  width: "100%",
+  alignItems: "center",
+},
+
+
+
 })
 
 
@@ -411,3 +447,46 @@ buttonStyle: {
 // <View style={{justifyContent:'flex-start',padding:10,}}>
 // // <Text style={{fontSize:14,color:colors.grey3}}>Garage Reading:</Text>
 // // </View>
+
+
+
+
+
+
+// <Dialog.Container visible={this.state.visible} >
+//  <View  style={{ height: '70%', width: '70%' }}>
+        
+//         <Dialog.Description>
+//         <SignatureCapture
+//         style={[{flex:1},styles.signature]}
+//         ref="sign"
+//         onSaveEvent={this._onSaveEvent}
+//         onDragEvent={this._onDragEvent}
+//         saveImageFileInExtStorage={false}
+//         showNativeButtons={false}
+//         showTitleLabel={false}
+//         backgroundColor="#ff00ff"
+//         strokeColor="#ffffff"
+//         minStrokeWidth={4}
+//         maxStrokeWidth={4}
+//         viewMode={"portrait"}/>
+//         </Dialog.Description>
+//         </View>
+       
+//         <View style={{ flex: 1, flexDirection: "row" }}>
+//         <TouchableHighlight style={styles.buttonStyle}
+//         onPress={() => { this.handleCancel() } } >
+//         <Text>Cancel</Text>
+//     </TouchableHighlight>
+                   
+
+//                     <TouchableHighlight style={styles.buttonStyle}
+//                         onPress={() =>this.resetSign() } >
+//                         <Text>Reset</Text>
+//                     </TouchableHighlight>
+//                     <TouchableHighlight style={styles.buttonStyle}
+//                     onPress={() => { this.useSignature() } } >
+//                     <Text>Save</Text>
+//                 </TouchableHighlight>
+//                 </View>
+//       </Dialog.Container>

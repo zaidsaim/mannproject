@@ -17,27 +17,28 @@ export default function RootNavigator(){
   const [data,setData]=useState(null)
 
 
-useEffect(()=>{
-   
-    getData();
+
+
+
+
+  const items=JSON.parse(localStorage.getItem('items'))
+  // console.log('rootnavigationpage',items)
+
+
+// const getData =  async() => {
+//     let item =localStorage.getItem('items')
+//     let data=JSON.parse(item)
     
-},[])
-
-
-
-
-const getData =  async() => {
-    let item =localStorage.getItem('items')
-    let data=JSON.parse(item)
-    
-    setData(data)
-    }
+//     setData(data)
+//     }
+console.log('rootnavigationpage',items)
+console.log('rootnavigationpagedriiiiiiiiiiiiiiiver',items?.driverid)
 
     return(
     <NavigationContainer>
 
         
-    {data?.driverid === null ?  <AuthStack />: <AppStack />}
+    {items ==  null ?  <AuthStack />: <AppStack />}
 
     </NavigationContainer>
     )

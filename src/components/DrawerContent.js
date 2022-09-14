@@ -1,5 +1,4 @@
 import React, {useState,useContext,useEffect} from 'react';
-
 import RequestPending from '../screens/RequestPending';
 import Toast from 'react-native-toast-message';
 import { Divider } from "@rneui/themed";
@@ -39,17 +38,16 @@ import 'localstorage-polyfill'
 
 export default function DrawerContent(props){
 
-
+ 
     const navigation  = useNavigation();
+    
 
-    // const items=JSON.parse(localStorage.getItem('items'))
-   
+  const items=JSON.parse(localStorage.getItem('items'))
 
 
-    // console.log('drawerpage',items)
-    // const [item, setItem] = useState();
+  
     const [item, setItem] = useState([]);
-    const [data,setData]=useState()
+    const [data,setData]=useState(items)
    
     const [datas,setDatas]=useState([])
    const [loginid,setLoginid]=useState()
@@ -57,8 +55,7 @@ export default function DrawerContent(props){
    const [syncitem,setSyncitem]=useState()
 
    
-   
-//    localStorage.setItem('rides',JSON.stringify(rides))
+  
 
   console.log('eeeee',datas)
 
@@ -94,16 +91,9 @@ export default function DrawerContent(props){
    async function alertbooking() {
 
     try {
-        // const items=JSON.parse(localStorage.getItem('items'))
-
-
-        let item =localStorage.getItem('items')
-        let data=JSON.parse(item)
-        setData(data)
-        console.log('mmmmmm',data.driverid)
-
+         const items=JSON.parse(localStorage.getItem('items'))
       const response = await
-       axios.get(`http://52.66.67.209:8087/ords/tasp/mobile/newreservationalert?driverid=${item.driverid}`)
+       axios.get(`http://52.66.67.209:8087/ords/tasp/mobile/newreservationalert?driverid=${items.driverid}`)
     //   console.log('drawer dataaaa',JSON.stringify(response.data))
       if(response.data.Responce === '000'){
         console.log('trueeeeeee')
@@ -121,7 +111,7 @@ export default function DrawerContent(props){
     }
   }
 
-  //http://52.66.67.209:8087/ords/tasp/mobile/getexpansehead?
+
 
 
   const showToast = () => {
@@ -132,23 +122,6 @@ export default function DrawerContent(props){
     });
   }
 
-// async function signOut(){
-       
-//     try{
-//         auth()
-//         .signOut()
-//         .then(
-//             ()=>{console.log("USER SUCCESSFULLY SIGNED OUT")
-//             dispatchSignedIn({type:"UPDATE_SIGN_IN",payload:{userToken:null}})
-//         })
-
-//     }catch(errot){
-//         Alert.alert(error.code)
-//     }
-// }
-
-
-//http://52.66.67.209:8087/ords/tasp/mobile/newreservationalert?driverid=00000030
 
 
 
@@ -157,17 +130,10 @@ export default function DrawerContent(props){
 async function signOut() {
 
     try {
-      
-    
-     let dataa=JSON.parse(localStorage.getItem('items'))
-      console.log('locallllllllllllllllllll',localStorage.getItem('items'))
-      console.log('dddddddddddddddddddddd', dataa.driverid)
-
-
-  //     let data=JSON.parse(item)
-  //  console.log('datssssssss',data.driverid)
+     let items=JSON.parse(localStorage.getItem('items'))
+     console.log('locallllllllllllllllllll',items)
         const response = await 
-        axios.get(`http://52.66.67.209:8087/ords/tasp/mobile/logout/?driverid=${dataa.driverid}`
+        axios.get(`http://52.66.67.209:8087/ords/tasp/mobile/logout/?driverid=${items.driverid}`
       );
       
       if(response.data.Responce === 1){
@@ -175,7 +141,7 @@ async function signOut() {
        
         localStorage.clear();
         // console.log('claerlocalDARATYTATA',localStorage.getItem('items'))
-        // navigation.navigate('SignInScreen')
+        navigation.navigate('SignInScreen')
        
 
       }
@@ -189,13 +155,7 @@ async function signOut() {
   }
 
  
-  // Cleardata=()=>{
-  //   return(
-  //     localStorage.removeItem('items')
-  //   )
-  //   // localStorage.clear()
-  //   }
-
+ 
 
          return(
             <>
@@ -212,8 +172,8 @@ async function signOut() {
          />*/}
 
                     <View style ={{marginLeft:10}}>
-                        <Text style ={{fontWeight:'bold',color:colors.cardbackground,fontSize:18 }} >zaid</Text>
-                        <Text style ={{color:colors.cardbackground,fontSize:14,marginVertical:10}} >saim</Text>
+                        <Text style ={{fontWeight:'bold',color:colors.cardbackground,fontSize:18 }} >{items?.drivername}</Text>
+                        <Text style ={{color:colors.cardbackground,fontSize:14,marginVertical:10}} >{items?.driverid}</Text>
                     </View>
 
                 </View>
@@ -242,21 +202,7 @@ async function signOut() {
              
                <DrawerItemList {...props} />
               
-               <DrawerItem 
-                 
-               label = "Mybooking"
-               labelStyle={{color:'white'}}
-               icon = {({color,size,focussed})=>(
-                   <Icon 
-                       type ="material-community"
-                       name = "receipt"
-                       color ={focussed ? '#7cc' :'#24ada2'}
-                       size ={size}
-                   
-                   />
-               )}
-               onPress={()=>props.navigation.navigate('MyBookingScreen')}
-           />
+            
             
            
            <DrawerItem 
@@ -489,4 +435,26 @@ async function signOut() {
 //         />
 //     )}
 //     onPress={()=>props.navigation.navigate('MyBookingScreen')}
+// />
+
+
+
+
+
+
+
+// <DrawerItem 
+                 
+// label = "Mybooking"
+// labelStyle={{color:'white'}}
+// icon = {({color,size,focussed})=>(
+//     <Icon 
+//         type ="material-community"
+//         name = "receipt"
+//         color ={focussed ? '#7cc' :'#24ada2'}
+//         size ={size}
+    
+//     />
+// )}
+// onPress={()=>props.navigation.navigate('MyBookingScreen')}
 // />

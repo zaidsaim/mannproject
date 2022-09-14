@@ -400,6 +400,7 @@ const MyBookingScreen = ({navigation,route}) => {
 
   const items=JSON.parse(localStorage.getItem('items'))
 
+ 
   // console.log('behinddata',items)
 
     const [data,setData]=useState([])
@@ -407,17 +408,30 @@ const MyBookingScreen = ({navigation,route}) => {
     const [datas,setDatas]=useState([])
     const [refreshing, setRefreshing] = useState(true);
     // const [user,setUser]=useState(JSON.parse(localStorage.getItem('items')))
-  const [user,setUser]=useState([])
+  // const [user,setUser]=useState([])
+
+  // useEffect(()=>{
+   
+    
+  // },[setData])
+
+  // useEffect(()=>{
+   
+    
+  // },[data])
+
 
   useEffect(()=>{
    
     getUser()
+  console.log('useeffectdata', getUser())
   },[])
-   
+
+
   useEffect(()=>{
     completeUser()
-
   },[])
+
 
 
 
@@ -427,13 +441,13 @@ useEffect(()=>{
 },[])
 
 
+
+
   
  
      
       // localStorage.setItem('user', JSON.stringify(user))
 
-  
-      console.log('userdatass',user)
      
       // localStorage.setItem('user', JSON.stringify(user))
 
@@ -441,20 +455,20 @@ useEffect(()=>{
      
             // console.log('onpresssssssss',item)
             if (item.status == 0) {
-              navigation.navigate('Guestdetails',{data:item})
+              navigation.replace('Guestdetails',{data:item})
             } 
             else if (item.status == 1) {
-              navigation.navigate('GarageReading',{data:item})
+              navigation.replace('GarageReading',{data:item})
             
             }   
            else if (item.status == 2) {
-        navigation.navigate('PickupReading',{data:item})
+        navigation.replace('PickupReading',{data:item})
       
       }   
       else if (item.status == 3) {
-       navigation.navigate('DropPoint',{data:item})
+       navigation.replace('DropPoint',{data:item})
       } else if (item.status == 4) {
-         navigation.navigate('RatingScreen',{data:item})
+         navigation.replace('RatingScreen',{data:item})
     
       } 
       
@@ -480,7 +494,7 @@ useEffect(()=>{
   
   async function getUser() {
    
-    // const items=JSON.parse(localStorage.getItem('items'))
+    const items=JSON.parse(localStorage.getItem('items'))
    
   
     try {
@@ -489,8 +503,10 @@ useEffect(()=>{
       console.log('GETDATA',response.data);
       setRefreshing(false);
       localStorage.setItem('user', JSON.stringify(response.data.Booking))
+      const user=JSON.parse(localStorage.getItem('user'))
+      console.log('new user',user);
       setData({data:response.data.Booking})
-      // console.log('new user ',user);
+     
      
     // setIsLoading(false)
  
@@ -501,6 +517,7 @@ useEffect(()=>{
   }
 
 
+ // console.log(user[0].garagereading)
 
 
 
@@ -524,7 +541,7 @@ useEffect(()=>{
   
 //    <TouchableOpacity onPress={()=>navigation.navigate('Guestdetails',{data:item})}>
 
-
+const user=JSON.parse(localStorage.getItem('user'))
 
   const FirstRoute = () => (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -711,7 +728,7 @@ useEffect(()=>{
                   backgroundColor={colors.gray}
                 />
        </View>
-       <Headers type='menu'  title='MyBooking' navigation={navigation}/>
+       <Headers type='chevron-left'  title='MyBooking' navigation={navigation}/>
     <TabView
    
       navigationState={{ index, routes }}

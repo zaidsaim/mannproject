@@ -1,51 +1,8 @@
-// import { StyleSheet, Text, View,Dimensions , Modal,} from 'react-native'
-// import React, { useState } from 'react'
-// import Header from '../components/Header'
-// import { colors } from '../global/styles'
-// import { SIZES } from '../../constants'
-// import Formbutton from '../components/Formbutton'
-// import { TouchableOpacity } from 'react-native-gesture-handler'
-
-// const width = Dimensions.get('window').width;
-// const height = Dimensions.get('window').height;
-
-
-
-// const Driver = ({navigation}) => {
-
-
-
-
-
-//   return (
-//     <View>
-//     <Header  type='arrow-left' color='white' title='Driver Id' navigation={navigation}/>
-//     <View style={{marginTop:SIZES.padding,}}>
-//       <Text style={{color:colors.lightgreen,marginHorizontal:'35%',fontSize:SIZES.h3,}}>Pick up Point</Text>
-//       <Text style={{color:colors.grey4,marginTop:SIZES.base,marginHorizontal:'25%',fontSize:SIZES.h3,}}>PALIKA PARKING PALACE</Text>
-//       <Text style={{color:colors.red,marginTop:SIZES.padding,marginHorizontal:'35%',fontSize:SIZES.h3,}}>Drop 0ff Point</Text>
-//       <Text style={{color:colors.grey4,marginTop:SIZES.base,fontSize:SIZES.h3,marginHorizontal:'25%'}}>PALIKA PARKING PALACE</Text>
-//       </View>
-//       <TouchableOpacity style={{marginTop:height/2}} >
-
-//       <Formbutton buttonTitle='Start'/>
-//       </TouchableOpacity>
-//     </View>
-//   )
-// }
-
-// export default Driver
-
-// const styles = StyleSheet.create({})
-
-
-
-
 
 
 import React, {Component} from 'react';
 import { StyleSheet, Text, View,Dimensions , Modal,Alert,TouchableHighlight,TextInput,KeyboardAvoidingView,ActivityIndicator} from 'react-native'
-import Header from '../components/Header'
+import Headers from '../components/Headers';
 import { colors } from '../global/styles'
 import { COLORS, SIZES } from '../../constants'
 import Formbutton from '../components/Formbutton'
@@ -96,20 +53,25 @@ export default class PickupReading extends Component {
     try{
       
       const user=JSON.parse(localStorage.getItem('user'))
+      if(user[0].garagereading  < meaterreading)
+{
   const response=await axios.get(`http://52.66.67.209:8087/ords/tasp/mobile/updatejob?bookingid=${user[0].bookingid}&status=3&meaterreading=${meaterreading}&latitude=&longitude=`)
   console.log('pick check reponse',response.data)
   if(response.status === 200){
     console.log('if',JSON.stringify(response.data))
-    this.props.navigation.navigate('MyBookingScreen') 
+    this.props.navigation.replace('MyBookingScreen') 
    
 
    }else{
     console.log('else',JSON.stringify(response.data))
     // this.props.navigation.navigate('MyBookingScreen') 
    }
-      
-      console.log('pick user data',response.data)
-  console.log('Pick screen',response.data)
+  }
+  else{
+
+    alert('pickup reading should be greater than garage reading')
+  }
+    
        
     }catch(error) {
         console.error(error);
@@ -134,7 +96,7 @@ export default class PickupReading extends Component {
     return (
       <>
 <View>
-        <Header  type='chevron-left' color='white' title='Driver Id' navigation={this.props.navigation}/>
+        <Headers  type='chevron-left' color='white' title='Driver Id' navigation={this.props.navigation}/>
         </View>
         <View style={{flex:1,backgroundColor:'white'}}>
     <View style={{marginTop:SIZES.padding,backgroundColor:'white'}}>
@@ -184,12 +146,13 @@ export default class PickupReading extends Component {
         </Modal>
       
         <TouchableHighlight
-         
-          style={{marginTop:height/3,backgroundColor:'white'}}
+        onPress={() => {
+          this.setModalVisible(true)}}
+          style={{marginTop:height/3,backgroundColor:'white'}} 
           >
-          <Formbutton buttonTitle='Start'  onPress={() => {
-            this.setModalVisible(true);
-          }}/>
+          <View style={{backgroundColor:'#24ada2',marginHorizontal:30,justifyContent:'center',color:'white',height:40,marginBottom:20}} >
+          <Text style={{justifyContent:'center',alignSelf:'center',color:'white',}}  >My BOOKING</Text>
+          </View>
         </TouchableHighlight>
         </View>
       </View>

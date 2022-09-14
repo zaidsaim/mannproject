@@ -55,14 +55,7 @@ options ={{
     ...TransitionPresets.RevealFromBottomAndroid
 }}
 /> */}
- <App.Screen 
- name ="RootClientTabs"
- component ={DrawerNavigator}
- options ={{
-     headerShown: false,
-     ...TransitionPresets.RevealFromBottomAndroid
- }}
-/> 
+
 
 
 <App.Screen 

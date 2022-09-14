@@ -1,5 +1,5 @@
 import React,{useState,useRef,useContext,useEffect} from 'react';
-import {View, Text, StyleSheet, Dimensions,TextInput, Alert, ImageBackground,windows,TouchableOpacity,} from 'react-native'
+import {View, Text, StyleSheet, Dimensions,TextInput, Alert, ImageBackground,windows,TouchableOpacity,ActivityIndicator} from 'react-native'
 import {colors, parameters,title} from "../../global/styles"
 import * as Animatable from 'react-native-animatable'
 import {Icon, Button,SocialIcon} from 'react-native-elements'
@@ -14,9 +14,16 @@ import localStorage from 'localStorage';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import 'localstorage-polyfill'
 import Formbutton from '../../components/Formbutton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setGestureState } from 'react-native-reanimated/lib/reanimated2/NativeMethods';
 import RootClientTabs from '../../navigation/ClientTabs';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from '@react-native-firebase/messaging';
+
+
+import {requestUserPermission,NotificationListner} from '../../firebasemassage/notification_helper'
+
 const ClientTabs = createBottomTabNavigator();
 
 const windowWidth = Dimensions.get('window').width;
@@ -27,6 +34,12 @@ const windowHeight = Dimensions.get('window').height;
 export default function SignInScreen({route}){
 
     const navigation  = useNavigation();
+
+   
+   
+
+
+
 
 
     // const {dispatchSignedIn} = useContext(SignInContext)
@@ -57,12 +70,92 @@ export default function SignInScreen({route}){
     return ('TI' + RandomNumber)
     }
 
+
+
+    
+//     useEffect(()=>{
+//         requestUserPermission()
+//         NotificationListner()
+//       },[])
+
+   
+// async function requestUserPermission() {
+//     const authStatus = await messaging().requestPermission();
+//     const enabled =
+//       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+//       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  
+//     if (enabled) {
+//       console.log('Authorization status:', authStatus);
+//       GetFCMToken()
+//     }
+//   }
+  
+  
+//   const  GetFCMToken = async()=>{
+//     const fcmtoken=JSON.parse(localStorage.getItem('fcmtoken'))
+//       // let fcmtoken = await AsyncStorage.getItem('fcmtoken')
+//         console.log('oldtokennnnn',fcmtoken)
+//       if(!fcmtoken){
+//           try {
+//               let fcmtoken = await messaging().getToken()
+//               if (fcmtoken) {
+//                 // let fcmtoken=JSON.stringify(fcmtoken)
+//                   console.log('newtokennnnnnnnnnn:',fcmtoken)
+//                   localStorage.setItem('fcmtoken',JSON.stringify(fcmtoken))
+//               // await AsyncStorage.setItem('fcmtoken',fcmtoken)
+//                console.log('setTokenfcm',fcmtoken)
+//               } 
+//           } catch (error) {
+//               console.log('error is coming from fcmtoken')
+              
+//           }
+//       }
+//   }
+  
+  
+//    const NotificationListner=()=>{
+//       messaging().onNotificationOpenedApp(remoteMessage => {
+//           console.log(
+//             'Notification caused app to open from background state:',
+//             remoteMessage.notification,
+//           );
+//       })
+  
+//       messaging()
+//         .getInitialNotification()
+//         .then(remoteMessage => {
+//           if (remoteMessage) {
+//             console.log(
+//               'Notification caused app to open from quit state:',
+//               remoteMessage.notification,
+//             );
+//             // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+//           }
+//           // setLoading(false);
+//         });
+  
+  
+//         messaging().onMessage(async remoteMessage=>{
+//              console.log('notification on fgroung',remoteMessage)
+//         })
+//   }
+  
+  
+  
   
 
 
-    //  useEffect(() => {
-    //     localStorage.setItem('items', JSON.stringify(items));
-    //   }, [items]);
+     useEffect(() => {
+        const fcmtoken=JSON.parse(localStorage.getItem('fcmtoken'))
+        console.log('signinscreenfcmdata',fcmtoken)
+      }, []);
+
+
+      
+   
+
+
 
       useEffect(() => {
         getUser()
@@ -70,18 +163,23 @@ export default function SignInScreen({route}){
 
 
   async function getUser() {
-    
-    
     try {
-        let token= GenerateRandomNumber();
-        console.log('trueValue1',token)
-        console.log('true',token)
-        
+        await messaging().registerDeviceForRemoteMessages();
+        let fcm_token = await messaging().getToken()
+        localStorage.setItem('fcmtoken',JSON.stringify(fcm_token))
+        const token=JSON.parse(localStorage.getItem('fcmtoken'))
+        console.log('my token=====>',token)
+        // let token= GenerateRandomNumber();
+        // console.log('trueValue1',token)
+        // console.log('true',token)
+       
         const response = await 
       axios.get(`http://52.66.67.209:8087/ords/tasp/mobile/getloginstatus/?loginid=${loginid}&&password=${password}&&token=${token}`);
+      console.log('value of response',response.data)
       if(response.data.Responce === 1){
-    navigation.navigate('RootClientTabs')
-        
+       
+        navigation.navigate('DrawerNavigator')
+
     //     console.log('tokennn',)
     console.log('responseSIGNDATTAAA',response.data)
        localStorage.setItem('items',JSON.stringify(response.data))
@@ -118,7 +216,12 @@ export default function SignInScreen({route}){
 
 
  
-
+//   if(isLoading){
+//     return( 
+//       <View style={styles.loader}> 
+//         <ActivityIndicator size="large" color="#0c9"/>
+//       </View>
+//   )}
   
 
     return(
@@ -127,14 +230,7 @@ export default function SignInScreen({route}){
         <View style={styles.container}>
         <ImageBackground resizeMode="cover"  source={require('../../../asset/images/loginimg.jpg')} style={{ flex: 1,
         justifyContent: "center"}}>
-           
-             {/*<Header title ="MY ACCOUNT"   onPress={()=>navigation.goBack(null)} style={{
-                justifyContent:'center',
-            alignItems:'center',
-            textAlign:'center',
-            }}/>  */}
-
-
+    
              <View style={{marginTop:50}}>
             
       
@@ -212,16 +308,16 @@ export default function SignInScreen({route}){
                 </View>
 
             </View>
-            <TouchableOpacity style={{paddingVertical:50,borderRadius:10}}>
-            <View style={{backgroundColor:'#24ada2',marginHorizontal:30,marginTop:'20%',justifyContent:'center',color:'white',height:40}}>
-            <Text style={{justifyContent:'center',alignSelf:'center',color:'white',}} onPress={()=>getUser(loginid,password,)}>SIGN IN</Text>
+           
             </View>
-            </TouchableOpacity>
-            </View>
-                   
+        
         </Formik>
 
-
+        <TouchableOpacity style={{paddingVertical:50,borderRadius:10}}  onPress={()=>getUser(loginid,password,token)}>
+        <View style={{backgroundColor:'#24ada2',marginHorizontal:30,marginTop:'20%',justifyContent:'center',color:'white',height:40}}>
+        <Text style={{justifyContent:'center',alignSelf:'center',color:'white',}}>SIGN IN</Text>
+        </View>
+        </TouchableOpacity>   
            
          {/*<TouchableOpacity onPress={()=>{navigation.navigate('ChangePassword')}}>
             <View style ={{alignItems:"center",marginTop:15}} >
@@ -280,7 +376,12 @@ const styles = StyleSheet.create({
     container :{
         flex:1
     },
-
+    loader:{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#fff"
+       },
     text1:{
         color:'white',
         fontSize:16

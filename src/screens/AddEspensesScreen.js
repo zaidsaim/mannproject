@@ -84,7 +84,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
           //   this.setState({sctgory:[...this.state.categoryNew]})
       
           // }
-      
+          componentDidMount(){
+            const user=JSON.parse(localStorage.getItem('user'))
+            // console.log('uuuuuuuuuuuuu',user)
+          }
 
 
 
@@ -284,10 +287,14 @@ Confirm = (date) => {
   hideDatePicker();
 };
 
+
+
 async imageUser() {
-  
  try {
-   const response = await axios.post('http://52.66.67.209:8087/ords/tasp/mobile/addexpbill?expid=3995?expbill=clob')
+  const itemsSubmit=JSON.parse(localStorage.getItem('itemsSubmit'))
+  console.log('itemsimageeeeeeeeeeeeiddddddddddd===========',itemsSubmit.ID)
+  console.log('apiitmessubmit',itemsSubmit)
+   const response = await axios.post(`http://52.66.67.209:8087/ords/tasp/mobile/addexpbill?expid=${itemsSubmit.ID}?expbill=${this.state.image}`)
    // setIsLoading(false)
    console.log('imageUser',JSON.stringify(response.data))
  } catch (error) {
@@ -333,6 +340,10 @@ componentDidMount(){
 
      const response = await axios.get(`http://52.66.67.209:8087/ords/tasp/mobile/addexpense/?mode=addnew&expensetype=${this.state.expensetype}&amount=${this.state.amount}&expensedate=${this.state.expensedate}&expensetime=${this.state.expensetime}&driverid=${items.driverid}&reservationid=${this.state.datas.reservationid}`)
      console.log('addddddexpeeeeeeee',JSON.stringify(response.data))
+     localStorage.setItem('itemsSubmit',JSON.stringify(response.data))
+     console.log('itemsSumitdata',itemsSubmit)
+     const itemsSubmit=JSON.parse(localStorage.getItem('itemsSubmit'))
+     console.log('itemsSumitdataaaaaaaaaaaaaaaaaaaaa',itemsSubmit)
      this.setState({
       loading: false,
      })

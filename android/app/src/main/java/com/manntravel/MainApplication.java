@@ -4,13 +4,14 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+// import com.react_native_signature.RCTSignaturePackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import com.rssignaturecapture.RSSignatureCapturePackage;
+// import com.rssignaturecapture.RSSignatureCapturePackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 
-import com.rssignaturecapture.RSSignatureCapturePackage; // <-- add this import
+// import com.rssignaturecapture.RSSignatureCapturePackage; // <-- add this import
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
 import com.manntravel.newarchitecture.MainApplicationReactNativeHost;

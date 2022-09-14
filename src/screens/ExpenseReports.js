@@ -40,7 +40,7 @@ async function getUser() {
 if(isLoading){
   return(
     <View style={styles.preloader}>
-      <ActivityIndicator size="large" color="#9E9E9E"/>
+      <ActivityIndicator size="large"/>
     </View>
   )
 }    
@@ -110,7 +110,12 @@ if(isLoading){
 export default ExpenseReport
 
 const styles = StyleSheet.create({
-
+  loader:{
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff"
+   },
   header:{
       flexDirection:'row',
       backgroundColor:'#24ada2',

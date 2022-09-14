@@ -262,7 +262,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    // compile project(':reactnativesignaturecapture') // <-- add this line
+    // compile project("reactnativesignaturecapture") // <-- add this line
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 implementation platform('com.google.firebase:firebase-bom:30.3.2')

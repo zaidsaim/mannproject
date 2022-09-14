@@ -51,8 +51,8 @@ export default function AddExpenses({navigation,route}){
 
 if(isLoading){
   return(
-    <View style={styles.preloader}>
-      <ActivityIndicator size="large" color="#9E9E9E"/>
+    <View style={styles.loader}>
+      <ActivityIndicator size="large" />
     </View>
   )
 }    
@@ -76,7 +76,7 @@ if(isLoading){
   
     renderItem={({item})=>(
         <>
-        <TouchableOpacity  onPress={()=>{navigation.navigate('AddExpensesScreen',{datas:item})}}>
+        <TouchableOpacity  onPress={()=>{navigation.navigate('AddEspensesScreen',{datas:item})}}>
        
         <View style={{backgroundColor:colors.grey4,padding:10,}}>
         <TouchableOpacity>
@@ -156,14 +156,11 @@ if(isLoading){
 
     const styles = StyleSheet.create({
     
-      preloader: {
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        position: 'absolute',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }
+      loader:{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#fff"
+       },
     })
     
